@@ -1,19 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Laptop, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
 const ThemeSwitcher = () => {
   const [mounted, setMounted] = useState(false);
+  const [showText, setShowText] = useState(false);
   const { theme, setTheme } = useTheme();
 
   // useEffect only runs on the client, so now we can safely show the UI
@@ -25,10 +19,53 @@ const ThemeSwitcher = () => {
     return null;
   }
 
-  const ICON_SIZE = 16;
+  const ThemeIcon = () => {
+    switch (theme) {
+      case "light":
+        return <Sun />
+      case "dark":
+        return <Moon />
+      case "system":
+        return <Laptop />
+    }
+  }
+
+  const toggleTheme = () => {
+    switch (theme) {
+      case "light":
+        setTheme("dark");
+        break;
+      case "dark":
+        setTheme("system");
+        break;
+      case "system":
+        setTheme("light");
+        break;
+    }
+  }
+
+  const toggleText = () => {
+    setShowText(!showText);
+  }
 
   return (
-    <DropdownMenu>
+    <Button
+      variant="ghost"
+      size={"sm"}
+      onClick={toggleTheme}
+      onMouseEnter={toggleText}
+      onMouseLeave={toggleText}>
+      <ThemeIcon
+        key="light" />
+      {
+        showText && (theme)}
+    </Button>
+  );
+};
+
+export { ThemeSwitcher };
+
+{/* <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size={"sm"}>
           {theme === "light" ? (
@@ -71,8 +108,4 @@ const ThemeSwitcher = () => {
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
-
-export { ThemeSwitcher };
+    </DropdownMenu> */}

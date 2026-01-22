@@ -5,7 +5,6 @@ import { InfoIcon } from "lucide-react";
 import { Suspense } from "react";
 
 async function UserDetails() {
-  console.log('test')
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
 
